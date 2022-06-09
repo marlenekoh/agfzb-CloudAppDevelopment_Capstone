@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+
+  <head>
     <meta charset="UTF-8">
     <title>Dealership Review</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
@@ -11,15 +12,92 @@
     <script src="https://unpkg.com/bootstrap-table@1.18.2/dist/bootstrap-table.min.js"></script>
     <script src="https://unpkg.com/bootstrap-table@1.18.2/dist/extensions/filter-control/bootstrap-table-filter-control.min.js"></script>
 
-</head>
+  </head>
 
-    <body>
-    <!-- Remove this line the first time you edit this file -->
-     This is the index page of your Django app!
+  <body>
     <!--Add a nav bar here -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <a class="navbar-brand" href="{% url 'djangoapp:index' %}">Dealership Review</a>
 
-    <!--Add a dealer table here -->
+      <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+          <li {% if request.resolver_match.url_name == 'index' %} class="active" {% endif %}>
+            <a class="nav-link" href="{% url 'djangoapp:index' %}">Home
+              <span class="sr-only">(current)</span></a>
+          </li>
+          <li {% if request.resolver_match.url_name == 'about' %} class="active" {% endif %}>
+            <a class="nav-link" href="{% url 'djangoapp:about' %}">About Us</a>
+          </li>
+          <li {% if request.resolver_match.url_name == 'contact' %} class="active" {% endif %}>
+            <a class="nav-link" href="{% url 'djangoapp:contact' %}">Contact Us</a>
+          </li>
+        </ul>
+        {% if user.is_authenticated %}
+          <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+            <li>
+              <span class="navbar-text text-primary">({{ user.username }})</span>
+            </li>
+            <li>
+              <a class="nav-link text-primary" href="{% url 'djangoapp:logout' %}">Logout</a>
+            </li>
+          </ul>
+        {% else %}
+          <form class="form-inline my-2 my-lg-0" action="{% url 'djangoapp:login' %}" method="post">
+            {% csrf_token %}
+            <input class="form-control mr-sm-2" type="username" name="username" placeholder="Username" aria-label="Username">
+            <input class="form-control mr-sm-2" type="password" name="password" placeholder="Password" aria-label="Password">
+            <button class="btn btn-primary my-2 my-sm-0" type="submit">Login</button>
+            <a class="btn text-primary" href="{% url 'djangoapp:registration' %}">Sign Up</a>
+          </form>
+        {% endif %}
+      </div>
+    </nav>
+    <!-- Content -->
 
-    </body>
+    {% if request.resolver_match.url_name == 'index' %}
+      <!--Add a dealer table here -->
+      <table class="table" id="table" data-filter-control="true">
+        <thead>
+          <tr>
+            <th data-field="id">ID</th>
+            <th data-field="full_name">Dealer Name</th>
+            <th data-field="city">City</th>
+            <th data-field="address">Address</th>
+            <th data-field="zip">Zip</th>
+            <th data-field="state" data-filter-control="select">State</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for dealer in dealer_names %}
+            <tr>
+              <td>{{dealer.id}}</td>
+              <td>
+                <a href="{% url 'djangoapp:dealer_details' dealer.id  %}">{{dealer.full_name}}</a>
+              </td>
+              <td>{{dealer.city}}</td>
+              <td>{{dealer.address}}</td>
+              <td>{{dealer.zip}}</td>
+              <td>{{dealer.st}}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <div class="container d-inline-flex p-2">
+        <div class="col">
+          {% block content %}{% endblock %}
+        </div>
+      </div>
+    {% endif %}
+  </body>
+
+  <script>
+    $(function () {
+      $('#table').bootstrapTable()
+    })
+  </script>
 
 </html>
