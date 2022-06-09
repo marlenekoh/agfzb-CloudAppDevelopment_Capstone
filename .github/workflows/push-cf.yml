@@ -39,6 +39,12 @@ jobs:
       - name: Target CF
         run: ibmcloud target --cf-api https://api.$IBM_CLOUD_REGION.cf.cloud.ibm.com -r $IBM_CLOUD_REGION -o $IBM_CLOUD_ORG -s $IBM_CLOUD_SPACE
         shell: bash
+      - name: Set env
+        run: ibmcloud cf set-env djangoapp NLU_API_KEY $IBM_NLU_API
+        shell: bash
+      - name: Restage app
+        run: ibmcloud cf restage djangoapp
+        shell: bash
       - name: List all applications
         run: ibmcloud cf apps
         shell: bash
