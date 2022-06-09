@@ -10,6 +10,7 @@ env:
   IBM_CLOUD_ORG: marlenekohxml
   MANIFEST_NAME: manifest.yml
   IBM_CLOUD_API: ${{secrets.IBM_CLOUD_API_KEY}}
+  IBM_NLU_API: ${{secrets.IBM_NLU_API_KEY}}
 
 defaults:
   run:
