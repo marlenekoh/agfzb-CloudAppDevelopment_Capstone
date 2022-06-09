@@ -119,8 +119,9 @@ def get_dealer_details(request, dealer_id):
 def add_review(request, dealer_id):
     context = {}
     context["dealers"] = get_dealers_from_cf(CF_URL, dealerId=dealer_id)
+    print(context["dealers"])
     if request.method == "GET":
-        context["cars"] = CarModel.objects.filter(dealer_id=dealer_id)
+        context["cars"] = CarModel.objects.all().filter(dealer_id=dealer_id)
         print(context["cars"])
         return render(request, 'djangoapp/add_review.html', context)
     elif request.method == "POST":
