@@ -113,7 +113,7 @@ def analyze_review_sentiments(text):
     # - Get the returned sentiment label such as Positive or Negative
     # Natural language understanding url
     NLU_URL = "https://api.au-syd.natural-language-understanding.watson.cloud.ibm.com/instances/83818e5d-26e0-4750-b4d1-87d578a56285"
-    NLU_API_KEY = os.getenv("IBM_NLU_API", "")
+    NLU_API_KEY = "kBZADBKxL_YqrHZIvUqiuCfiPqviqWkbbSTXY34peBBc"
 
     # Call get_request with a URL parameter
     json_result = get_request(f"{NLU_URL}/v1/analyze",
